@@ -20,16 +20,16 @@
 		Just few steps to create your account.
 	</p>
 	<hr>
-	<form action="signup.php" method="post">
+	<form action="signup1.php" method="post">
 	<input type="submit" name="signup" value="Create Account">
 </form>
 
 </div>
 
 <div id="d1">
-	<form action="signin.php" method="post">
+	<form onsubmit="return check()" action="signin.php" method="post">
 	<label for="user"><b>Username</b></label>
-    <input type="text" id="user" name="user" placeholder="Username">
+    <input type="text" id="uname" name="uname" placeholder="Enter your username">
     <p></p>
     <label for="pwd"><b>Password</b></label>
     <input type="Password" id="pwd" name="pwd" placeholder="Password">
@@ -39,5 +39,15 @@
 
 </div>
 </div>
+<script type="text/javascript">
+	function check(){
+		var email = document.getElementById("user").value;
+		var pass = document.getElementById("pwd").value;
+		if((email == "")||(pass == "")){
+			 alert("Please Enter Credentials");
+			 return false;
+		}
+	}
+</script>
 </body>
 </html>

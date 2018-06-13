@@ -1,15 +1,16 @@
-header {
+header, .head {
 	background-color: #78300f;
 	color: white;
 	font-family: Microsoft Sans Serif;
-	padding: 30px;
-	font-size: 40px;
+	padding: 2px;
+	font-size: 30px;
 	text-align: center;
+    height: auto;
 }
 body {
 	margin: 0px;
 }
-input[type=text],[type=password], select {
+input[type=text],[type=password],[type=date], select {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -18,7 +19,7 @@ input[type=text],[type=password], select {
     border-radius: 4px;
     box-sizing: border-box;
 }
-input[type=submit], select {
+input[type=submit],[type=number], select {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -52,11 +53,84 @@ input[type=submit], select {
 	color: white;
 	font-size: 60px;
 	text-align: center;
-	background-image: url("head.jpg");
+	background-image: url("images\\head.jpg");
 	
 }
 #black {
 	background-color: black;
 	opacity: 0.7;
 	height: 550px;
+}
+#p21 {
+    margin: 13px;
+    width: 50%;
+    border-radius: 8px;
+    background-color: #f2f2f2;
+    padding: 20px;
+}
+.sticky {
+    position: fixed;
+    top: 0px;
+    background-color: #9cfdff;
+    width: 100%;
+}
+
+#effect {
+    width: 60%;
+    height: auto;
+    background-color: #f2f2f2;
+    border-radius: 8px;
+    padding: 5px;
+    -webkit-animation-name: example;
+    -webkit-animation-duration: 4s;
+    animation-name: example;
+    animation-duration: 4s;
+}
+@-webkit-keyframes example {
+    0% {opacity: 0; left: 200px;}
+    50% {opacity: 0.7; left: 100px;}
+    100% {opacity: 1; left: 200px;}
+}
+
+.imgbtn {
+    width: 100%;
+    border-radius: 50%;
+}
+.chk {
+    display: block;
+    cursor: pointer;
+    position: relative;
+}
+.chk input {
+    opacity: 0;
+    cursor: pointer;
+    position: absolute;
+}
+.chkm {
+    position: absolute;
+    height: 25px;
+    width: 25px;
+    background-color: white;
+}
+a:link, a:visited {
+    background-color: #78300f;
+    text-align: center;
+    display: inline-block;
+    padding: 14px 25px;
+    color: white;
+    text-decoration: none;
+}
+a:hover {
+    -webkit-animation-name: anim;
+    -webkit-animation-duration: 1s;
+    animation-name: anim;
+    animation-duration: 1s;
+}
+@-webkit-keyframes anim {
+     0% {font-size: 17px;}
+    50% {font-size: 18px;}
+    100% {font-size: 15px;}
+}
+iframe:hover {
+    width: 92%;
 }

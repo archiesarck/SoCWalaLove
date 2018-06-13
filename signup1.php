@@ -12,10 +12,14 @@
 <p></p>
 <center>
 	<div id="p21" align="left">
-		<form onsubmit="return check()" onsubmit="return chk_pass()" method="post" action="action_signup.php">
+		<form onsubmit="return check()" method="post" action="action_signup.php">
 			<label>Full Name</label>
 			<p></p>
 			<input type="text" name="fname" id="fname">
+			<p></p>
+			<label>Username</label>
+			<p></p>
+			<input type="text" name="uname" id="uname">
 			<p></p>
 			<label>Date of Birth</label>
 			<p></p>
@@ -23,10 +27,12 @@
 			<p></p>
 			<label>Standard</label>
 			<p></p>
-			<select name="Standard" id="std">
+			<select name="std" id="std">
 				<option value="hs">High School</option>
 				<option value="twelve">10 +2</option>
 				<option value="bt">B.Tech.</option>
+				<option value="js">Job Seeker</option>
+				<option value="prof">Proffesor</option>
 			</select>
 			<p></p>
 			<label>Email</label>
@@ -63,17 +69,19 @@ function myFunction() {
 
 </script>
 <script type="text/javascript">
+	
 	function check(){
 		var email = document.getElementById("email").value;
 		var pass1 = document.getElementById("pwd1").value;
 		var pass2 = document.getElementById("pwd2").value;
 		var fname = document.getElementById("fname").value;
 		var date = document.getElementById("date").value;
-		if((email == "")||(pass1 == "")||(pass2 == "")||(fname == "")||(date == "")){
+		if((email == "")||(pass1 == "")||(pass2 == "")||(fname == "")){
 			 alert("Please Enter Credentials");
 			 return false;
 		}
 	}
+
 </script>
 </body>
 </html>
