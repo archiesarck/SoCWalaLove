@@ -1,0 +1,3 @@
+/Lines Starting with / represent comments
+/video_id video_link  (0=standalone_video 1=playlist)
+1 https://www.youtube.com/embed/41qgdwd3zAg 1
