@@ -131,6 +131,7 @@ a:hover {
     50% {font-size: 18px;}
     100% {font-size: 15px;}
 }
-iframe:hover {
-    width: 92%;
+iframe:active {
+    width: 1080px;
+    height: 720px;
 }

@@ -8,9 +8,15 @@
 	$file = "courses\\" . $row['Username'] . ".txt";
 	echo $file;
 	$fp = fopen($file,"w");
-
+	$i = sizeof($_GET['course']);
 	foreach($_GET['course'] as $var) {
-		$data = $var . "\n";
+		if($i!=1){
+			$data = $var . "\n";
+		}
+		else{
+			$data = $var;
+		}
+		--$i;
 		fwrite($fp,$data);
 	}
 	fclose($fp);

@@ -1,0 +1,33 @@
+Coding
+java
+python
+physics
+c
+c++
+ruby
+fortan
+machine learning
+artificial inteligence
+biology
+chemistry
+economics
+histroy
+civics
+music
+guitar
+piano
+php
+Early math
+Arithmetic
+Pre-algebra
+Algebra 1
+Geometry
+Algebra 2
+Trigonometry
+Statistics & probability
+Precalculus
+Calculus
+Multivariable calculus
+Differential equations
+linear algebra
+Math for fun and glory
