@@ -22,6 +22,7 @@ cursor_num_videos = cnx.cursor()
 cursor_ratings = cnx.cursor()
 cursor_params_matrix = cnx.cursor()
 cursor_user_params = cnx.cursor()
+cursor_video_index = cnx.cursor()
 #=================================
 
 query_num_users = ("select count(*) from users")
@@ -193,12 +194,18 @@ rated_matrix
 #curr_topic is replaced by "tid" which we are getting from php file!
 
 video_index = []
-for i in range(num_videos):
-    if rated_matrix[curr_user_index_ratings][i]==0:
-        video_index.append(i)
+
+query_video_index = ("select VID from videos where TID="+tid)
+cursor_video_index.execute(query_video_index)
+result_video_index = cursor_video_index.fetchall()
+#each row[0] contains VID which is related to this topic (tid)
+for row in result_video_index:
+    if rated_matrix[curr_user_index_ratings][row[0]-1]==0:
+        video_index.append(row[0])
 video_index
-
-
+cursor_video_index.close()
+#in rated_matrix indexing starts from 0 as in an array 
+#but in db video_id starts from 1, so row[0]-1!
 #nothing to recommend, user have already seen all of then :)    
 
 
@@ -262,13 +269,16 @@ for video in video_index:
         if user == curr_user_index_ratings:
             continue
         else:
-            video_rated[p] += ratings[user][video]*user_val[user]
-            if rated_matrix[user][video] == 1:
+            video_rated[p] += ratings[user][video-1]*user_val[user]
+            if rated_matrix[user][video-1] == 1:
                 count+=1
     video_rated[p] /= count
     p+=1
-
+#I hope u understand why I did video-1 !
 video_rated
-print(sorted(video_rated, reverse=True))
+final_array = [x for _,x in sorted(zip(video_rated,video_index))]
+#very short code for sorting video_index w.r.t video_rated!
+print(final_array)
 #close the db connection!
+
 cnx.close()  
