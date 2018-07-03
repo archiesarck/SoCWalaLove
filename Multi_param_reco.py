@@ -78,14 +78,17 @@ ratings = [[0 for i in range(num_videos)] for j in range(num_users)]
 #.
 #it will be fetched by ratings[user][video]
 
-result = cursor_ratings.fetchall()
-for row in result:
-    for i in range(num_users):
-        if(row[0]==uid):curr_user_index_ratings = i
-        #assigning index of current user which is in ratings matrix.
-        #i.e. the position of row in which ratings of current user is present
-        for j in range(num_videos):
-            ratings[i][j] = row[j+1]
+result_ratings = cursor_ratings.fetchall()
+for row in result_ratings:
+    if(row[0]==uid):
+        exit
+    else:
+        curr_user_index_ratings = curr_user_index_ratings + 1
+
+
+for i in range(num_users):
+    for j in range(num_videos):
+        ratings[i][j] = result_ratings[i][j+1]
 ratings
 cursor_ratings.close()
 #ratings table updated 
@@ -104,12 +107,10 @@ cursor_ratings.close()
 query_params_matrix = ("select difficulty,relevance,complexity,length,production,engaging from videos")
 cursor_params_matrix.execute(query_params_matrix)
 result_params_matrix = cursor_params_matrix.fetchall()
-
 params_matrix = [[0 for x in range(num_params)] for y in range(num_videos)]
-for row in result_params_matrix:
-    for i in range(num_videos):
-        for j in range(num_params):
-            params_matrix[i][j] = row[j]
+for i in range(num_videos):
+    for j in range(num_params):
+        params_matrix[i][j] = result_params_matrix[i][j]
 params_matrix
 cursor_params_matrix.close()
 #params_matrix updated with values from db!
@@ -141,11 +142,15 @@ query_user_params = ("select ID,difficulty,relevance,complexity,length,productio
 cursor_user_params.execute(query_user_params)
 result_user_params = cursor_user_params.fetchall()
 for row in result_user_params:
-    for i in range(num_users):
-        if(row[0]==uid):curr_user_index_params = i
-        #assigning curr_user_index_params to be used to find cost!
-        for j in range(num_params):
-            user_params[i][j] = row[j+1]
+    if(row[0]==uid):
+        exit
+    else:
+        curr_user_index_params = curr_user_index_params + 1
+
+
+for i in range(num_users):
+    for j in range(num_params):
+        user_params[i][j] = result_user_params[i][j+1]
 user_params
 cursor_user_params.close()
 #updated user_params from table users!
@@ -182,7 +187,7 @@ rated_matrix
 #curr_user_index = already assigned
 
 #we can fetch the index of array row which consists of this 
-#uid and the use it in line 177 because it is not neccesary that curr_user_index
+#uid and the use it in line 193  because it is not neccesary that curr_user_index
 #will always be equal to that index, it can be discontinuous!
 
 #curr_topic is replaced by "tid" which we are getting from php file!
@@ -193,7 +198,7 @@ for i in range(num_videos):
         video_index.append(i)
 video_index
 
-if(size(video_index)==0):print("No videos to recommend!")
+
 #nothing to recommend, user have already seen all of then :)    
 
 
@@ -264,6 +269,6 @@ for video in video_index:
     p+=1
 
 video_rated
-
+print(sorted(video_rated, reverse=True))
 #close the db connection!
 cnx.close()  
