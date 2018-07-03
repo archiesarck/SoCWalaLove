@@ -278,7 +278,8 @@ for video in video_index:
 video_rated
 final_array = [x for _,x in sorted(zip(video_rated,video_index), reverse=True)]
 #very short code for sorting video_index w.r.t video_rated!
-print(final_array)
+for i in range(size(final_array)):
+    print(final_array[i])
 #close the db connection!
 
 cnx.close()  
