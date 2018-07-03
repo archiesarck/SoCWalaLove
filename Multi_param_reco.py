@@ -7,10 +7,9 @@ import sys
 from numpy import *
 import mysql.connector
 
-#uid = int(sys.argv[1])
-#tid = str(sys.argv[2])
-uid = 14
-tid = str(1)
+uid = int(sys.argv[1])
+tid = str(sys.argv[2])
+
 curr_user_index_ratings = 0
 curr_user_index_params = 0
 num_videos=0
@@ -25,24 +24,22 @@ cursor_params_matrix = cnx.cursor()
 cursor_user_params = cnx.cursor()
 #=================================
 
-query_num_users = ("select ID from users")
+query_num_users = ("select count(*) from users")
 
 cursor_num_users.execute(query_num_users) 
-
-for(UID) in cursor_num_users:
-    #print(ID,Username)
-    num_users = num_users+1
+result_num_users = cursor_num_users.fetchall()
+for row in result_num_users:
+    num_users = row[0]
 
 #total number of users
 
 cursor_num_users.close() 
 
-query_num_videos = ("select VID from videos")
+query_num_videos = ("select count(*) from videos")
 cursor_num_videos.execute(query_num_videos) 
-
-for(VID) in cursor_num_videos:
-    #print(VID,Name)
-    num_videos = num_videos+1
+result_num_videos = cursor_num_videos.fetchall()
+for row in result_num_videos:
+    num_videos = row[0]
 
 #total number of videos
 
@@ -99,8 +96,8 @@ cursor_ratings.close()
 #create params_matrix 
 #old params_matrix, I will comment this out!
 #=================================================================
-params_matrix = random.random(size=(num_videos,num_params))
-params_matrix
+#params_matrix = random.random(size=(num_videos,num_params))
+#params_matrix
 #=================================================================
 #new params_matrix after taking values from db!
 #=================================================================
@@ -123,7 +120,7 @@ cursor_params_matrix.close()
 
 #convert params_matrix to unit vectors
 for video in range(num_videos):
-    norm=linalg.norm(params_matrix[video,:])
+    norm=linalg.norm(params_matrix[video])
     params_matrix[video][:] = [x / norm for x in params_matrix[video]]
 params_matrix
 
@@ -166,7 +163,10 @@ user_params
 
 
 #rated matrix tells whether a particular movie is rated or not
-rated_matrix=(ratings!=0)
+rated_matrix = [[0 for i in range(num_videos)] for j in range(num_users)]
+for i in range(num_users):
+    for j in range(num_videos):
+        if(ratings[i][j]!=0):rated_matrix[i][j]=1
 rated_matrix
 #same structure as ratings matrix!
 
@@ -189,7 +189,7 @@ rated_matrix
 
 video_index = []
 for i in range(num_videos):
-    if rated_matrix[curr_user_index_ratings][i]==False:
+    if rated_matrix[curr_user_index_ratings][i]==0:
         video_index.append(i)
 video_index
 
@@ -258,7 +258,7 @@ for video in video_index:
             continue
         else:
             video_rated[p] += ratings[user][video]*user_val[user]
-            if rated_matrix[user][video] == True:
+            if rated_matrix[user][video] == 1:
                 count+=1
     video_rated[p] /= count
     p+=1
