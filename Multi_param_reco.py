@@ -276,7 +276,7 @@ for video in video_index:
     p+=1
 #I hope u understand why I did video-1 !
 video_rated
-final_array = [x for _,x in sorted(zip(video_rated,video_index))]
+final_array = [x for _,x in sorted(zip(video_rated,video_index), reverse=True)]
 #very short code for sorting video_index w.r.t video_rated!
 print(final_array)
 #close the db connection!
