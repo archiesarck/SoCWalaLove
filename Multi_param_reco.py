@@ -82,7 +82,7 @@ ratings = [[0 for i in range(num_videos)] for j in range(num_users)]
 result_ratings = cursor_ratings.fetchall()
 for row in result_ratings:
     if(row[0]==uid):
-        exit
+        break
     else:
         curr_user_index_ratings = curr_user_index_ratings + 1
 
@@ -144,7 +144,7 @@ cursor_user_params.execute(query_user_params)
 result_user_params = cursor_user_params.fetchall()
 for row in result_user_params:
     if(row[0]==uid):
-        exit
+        break
     else:
         curr_user_index_params = curr_user_index_params + 1
 
@@ -272,11 +272,12 @@ for video in video_index:
             video_rated[p] += ratings[user][video-1]*user_val[user]
             if rated_matrix[user][video-1] == 1:
                 count+=1
-    video_rated[p] /= count
+    if(count!=0):video_rated[p] /= count
     p+=1
 #I hope u understand why I did video-1 !
 video_rated
-final_array = [x for _,x in sorted(zip(video_rated,video_index), reverse=True)]
+rated = [1,4,2]
+final_array = [x for _,x in sorted(zip(rated,video_index),reverse=True)]
 #very short code for sorting video_index w.r.t video_rated!
 for i in range(size(final_array)):
     print(final_array[i])
