@@ -10,8 +10,9 @@
 	$la = (int)$last['last_tid'];
 	
 	//last_tid is a column in users which stores the current course u r doing!
-	
+	exec("reg.py 2>&1 $uid",$useless)
 	exec("Multi_param_reco.py 2>&1 $uid $la",$out);
+	print_r($out);
 		//output will be an array of video_ids with descending order of ratings
 		//fetch that array out and show videos for the course having id
 		//last_tid using video_id in $out
@@ -23,7 +24,7 @@
 		$row = mysqli_fetch_array($query,MYSQLI_ASSOC);
 		echo $row['link']."\n";
 	}
-	//we now have indivisual links!
+	//we now have indivisual links, use/embed them!
 		
 
 	
