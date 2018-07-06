@@ -78,7 +78,7 @@ video_params = around(video_params, decimals=2)
 
 sample = zeros(num_params)
 
-def linear_regression(x, y, m_current=sample, b_current=0, epochs=1, learning_rate=0.001, approx0=0.001):
+def linear_regression(x, y, m_current=sample, b_current=0, epochs=10, learning_rate=0.001, approx0=0.001):
     N = float(len(y))
     for iteration in range(epochs):
         
@@ -119,7 +119,8 @@ def linear_regression(x, y, m_current=sample, b_current=0, epochs=1, learning_ra
 
 
 m,b = linear_regression(video_params,curr_user_ratings)
-print(m)
+#print(m)
+if(all(m)==all(zeros(num_params))):m = [-1/sqrt(6) for i in range(num_params)]
 params = ['difficulty','relevance','complexity','length','production','engaging']
 for i in range(num_params):
     cursor_m = conn.cursor()
