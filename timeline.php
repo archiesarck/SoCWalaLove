@@ -1,13 +1,18 @@
 <?php
+//Block 1 ===============================================================================================
 	session_start();
 
 	$connect = mysqli_connect("localhost","root","","soc");
-	$id = $_SESSION["id"];
+	$uid = $_SESSION["id"];
 	//echo $id;
-	$result = mysqli_query($connect,"select * from users where ID=$id ");
+	$result = mysqli_query($connect,"select * from users where ID=$uid ");
 	$row = mysqli_fetch_array($result,MYSQLI_ASSOC);
 	//echo $row['Username'];
+	$last_tid = mysqli_query($connect,"select last_tid from users where ID=$uid");
+	$last = mysqli_fetch_array($last_tid,MYSQLI_ASSOC);
+	$la = (int)$last['last_tid'];
 
+//=======================================================================================================
 ?>
 <!DOCTYPE html>
 <html>
@@ -42,35 +47,49 @@
 	
 	<div style="">
 		<div style="width: 78%; border-radius: 8px; float: right; background-color: #f2f2f2; overflow: auto; ">
-		<?php 
-	$id = $_SESSION["id"];
-	$connection = mysqli_connect("localhost","root","","soc");
-	$arr = mysqli_query($connection,"select * from users where Id=$id");
-	$r = mysqli_fetch_array($arr,MYSQLI_ASSOC);
+		<?php
+		//Block 2 =========================================================================================================================
 
-	$file = "courses\\".$r['Username'].".txt";
-	$fp = fopen($file, "r");
-	//echo $file;
-	while(!feof($fp)){
-		$data = fgets($fp);
-		if (ord($data)!=10) {
-			echo "<table style=\"width: 100%;\"><tr><td><h3>Recommended for you in ". $data."</h3></td></tr><tr>";
-			$link = "links\\".trim($data).".txt";
-			//echo $link."<br>";
-			$f = fopen($link,"r");
-			while(!feof($f)){
-				$l = fgets($f);
-				//echo $l."<br>";
-				if (ord($l)!=10){
-					echo "<td style=\"width: 30%; text-align: center;\"><iframe src=\"" . trim($l) . "\" width=\"90%\" style=\"border-radius: 10px; border-width: 0px;\" allowfullscreen></iframe></td>";
+			$sum = 0;
+			$num_videos_query = mysqli_query($connect,"select count(*) as num from videos");
+			$num_videos_row = mysqli_fetch_array($num_videos_query,MYSQLI_ASSOC);
+			$num_videos = (int)$num_videos_row['num'];
+			for($i=1;$i<=$num_videos;$i++){
+				$x = "`".$i."`";
+				$ratings_query = mysqli_query($connect,"select $x as rate from ratings where UID=$uid");
+				$ratings_row = mysqli_fetch_array($ratings_query,MYSQLI_ASSOC);
+				$sum = $sum + (int)$ratings_row['rate'];
+			}
+			//echo $la;
+			if($sum!=0){
+				exec("reg.py 2>&1 $uid",$useless);
+				//print_r($useless);
+				//********************loop it for all current topics!
+				//there can be more than 1 non-related current topics
+				exec("Multi_param_reco.py 2>&1 $uid $la",$out);
+				for ($i=0; $i < sizeof($out); $i++) { 
+					$vid = $out[$i];
+					$query = mysqli_query($connect,"select link from videos where VID=$vid");
+					$row = mysqli_fetch_array($query,MYSQLI_ASSOC);
+					echo "<td style=\"width: 30%; text-align: center;\"><iframe src=\"" . trim($row['link']) . "\" width=\"90%\" style=\"border-radius: 10px; border-width: 0px;\" allowfullscreen></iframe></td>";
 				}
 			}
-			fclose($f);
-			echo "</tr></table>";
-		}
-	}
-	fclose($fp);
+			else{
 
+				//*************loop it for all current topics!
+				//there can be more than 1 non-related current topics
+				exec("Multi_param_reco.py 2>&1 $uid $la",$out);
+				//print_r($out);
+				for ($i=0; $i < sizeof($out); $i++) { 
+					$vid = $out[$i];
+					$query = mysqli_query($connect,"select link from videos where VID=$vid");
+					$row = mysqli_fetch_array($query,MYSQLI_ASSOC);
+					echo "<td style=\"width: 30%; text-align: center;\"><iframe src=\"" . trim($row['link']) . "\" width=\"90%\" style=\"border-radius: 10px; border-width: 0px;\" allowfullscreen></iframe></td>";
+				}
+			}
+			
+		
+//======================================================================================================================
 ?>
 		
 		
@@ -78,7 +97,7 @@
 	<div style="width: 20%; background-color: #78300f; border-radius: 8px; float: left; position: fixed;">
 		<table style="width: 100%; padding: 1px;" cellpadding="20px">
 			<tr style="text-align: center; font-size: 15px; padding-top: 10px;"><td><a href="courses.php">My Courses</a></td></tr>
-			<tr style="text-align: center; font-size: 15px; padding-top: 10px;"><td><a href="#">Show Ratings</a></td></tr>
+			<tr style="text-align: center; font-size: 15px; padding-top: 10px;"><td><a href="recommend.php">Show Ratings</a></td></tr>
 			<tr style="text-align: center; font-size: 15px; padding-top: 10px;"><td><a href="signup2.php">Set Preferences</a></td></tr>
 			<tr style="text-align: center; font-size: 15px; padding-top: 10px;"><td><a href="chng_pwd.php">Change Password</a></td></tr>
 			<tr style="text-align: center; font-size: 15px; padding-top: 10px;"><td><a href="remove.php">Remove Account</a></td></tr>

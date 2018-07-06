@@ -161,7 +161,7 @@ cursor_user_params.close()
 
 for user in range(num_users):
     norm=linalg.norm(user_params[user])
-    user_params[user][:] = [x / norm for x in user_params[user]]
+    if(norm!=0):user_params[user][:] = [x / norm for x in user_params[user]]
 user_params
 
 
