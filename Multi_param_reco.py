@@ -204,6 +204,7 @@ for row in result_video_index:
         video_index.append(row[0])
 video_index
 cursor_video_index.close()
+#print(video_index)
 #in rated_matrix indexing starts from 0 as in an array 
 #but in db video_id starts from 1, so row[0]-1!
 #nothing to recommend, user have already seen all of then :)    
@@ -276,8 +277,7 @@ for video in video_index:
     p+=1
 #I hope u understand why I did video-1 !
 video_rated
-rated = [1,4,2]
-final_array = [x for _,x in sorted(zip(rated,video_index),reverse=True)]
+final_array = [x for _,x in sorted(zip(video_rated,video_index),reverse=True)]
 #very short code for sorting video_index w.r.t video_rated!
 for i in range(size(final_array)):
     print(final_array[i])
