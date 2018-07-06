@@ -192,6 +192,16 @@ rated_matrix
 #will always be equal to that index, it can be discontinuous!
 
 #curr_topic is replaced by "tid" which we are getting from php file!
+def index(x):
+    ind = 0
+    cursor_index = cnx.cursor()
+    cursor_index.execute("select VID from videos")
+    result_index = cursor_index.fetchall()
+    for i in range(num_videos):
+        if(result_index[i][0]==x):ind = i
+    cursor_index.close()
+    return ind
+
 
 video_index = []
 
@@ -200,7 +210,7 @@ cursor_video_index.execute(query_video_index)
 result_video_index = cursor_video_index.fetchall()
 #each row[0] contains VID which is related to this topic (tid)
 for row in result_video_index:
-    if rated_matrix[curr_user_index_ratings][row[0]-1]==0:
+    if rated_matrix[curr_user_index_ratings][index(row[0])]==0:
         video_index.append(row[0])
 video_index
 cursor_video_index.close()
